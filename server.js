@@ -15,7 +15,7 @@ app.get('/posts', (req, res) => {
 	.find()
 	.exec()
 	.then(blogpost => {
-		res.json(blogpost)
+		res.json(blogpost.apiRepr())
 	})
 	.catch(
 		err => {
@@ -28,7 +28,7 @@ app.get('/posts/:id', (req, res) => {
 	Blogpost
 	.findById(req.params.id)
 	.exec()
-	.then(blogpost => res.json(blogpost))
+	.then(blogpost => res.json(blogpost.apiRepr()))
 	.catch(err => {
 		console.error(err);
 			res.status(500).json({message: "Internal server error"})

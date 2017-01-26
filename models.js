@@ -3,20 +3,20 @@ const mongoose = require('mongoose');
 const blogpostSchema = mongoose.Schema({
 	title: {type: String, required: true},
 	content: {type: String, required: true},
-	author: {type: String, required: true},
-	created: {type: Number, required: true}
+	author: {
+		firstName: String,
+		lastName: String
+	},
+	created: {type: Date, default: Date.now}
 });
 
 blogpostSchema.virtual('authorName').get(function(){
-	const newName = this.author.split(' ');
-	return {
-		"firstName": newName[0],
-		"lastName": newName[1]
-	};
-})
+	return `${this.author.firstName} ${this.author.lastName}`.trim();
+});
 
 blogpostSchema.methods.apiRepr = function() {
 	return {
+		id: this._id,
 		title: this.title,
 		content: this.content,
 		author: this.authorName,
